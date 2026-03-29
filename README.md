@@ -25,3 +25,25 @@ rvec (Rotation Vector - 旋转向量)：
 Python 3.10+
 OpenCV-Python (contrib 扩展包)
 NumPy
+
+
+
+这是项目的**感知层核心模块**，实现了基于 ArUco 标记的实时 3D 姿态估计与虚拟几何体渲染。
+
+## 🚀 功能实现 (Current Features)
+- [x] **单目摄像头适配**：支持标准 USB/内置摄像头调用。
+- [x] **ArUco 标记检测**：采用 `6x6_250` 字典，实现高精度的标记追踪。
+- [x] **3D 空间投影 (AR)**：利用 OpenCV 的 `projectPoints` 函数，将虚拟立方体渲染在物理标记上。
+
+## 🧠 技术核心 (Technical Notes)
+本项目核心逻辑在于 **PnP (Perspective-n-Point) 问题** 的求解：
+1. **输入**：标记的四个角点像素坐标 + 相机内参矩阵 ($K$)。
+2. **解算**：得到旋转向量 ($rvec$) 和平移向量 ($tvec$)。
+3. **渲染**：定义立方体的 8 个顶点（世界坐标系），通过 $rvec$ 和 $tvec$ 投影回图像平面。
+
+> **注意**：目前 Z 轴设为 `-size` 以实现向外生长的视觉效果（取决于相机坐标系定义）。
+
+## 🛠️ 如何运行
+1. 确保安装了 `opencv-contrib-python` 和 `numpy`。
+2. 运行 `perception_engine.py`。
+3. 将 **6x6 ArUco 标记** 置于镜头前。
