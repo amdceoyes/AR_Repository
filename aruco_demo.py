@@ -40,6 +40,10 @@ while True:
                                   [0.02, -0.02, 0], [-0.02, -0.02, 0]], dtype=np.float32)
             _, rvec, tvec = cv2.solvePnP(obj_points, corners[i], camera_matrix, dist_coeffs)
             cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvec, tvec, 0.03)
+                    # 把解算出的平移向量(tvec)拿出来，分别对应 X, Y, Z
+        tx, ty, tz = tvec[0][0], tvec[1][0], tvec[2][0]
+        # 在控制台打印出来。tz 尤其重要，它代表物体离你有多远
+        print(f"📍 ID: {ids[i][0]} | X:{tx:.2f} Y:{ty:.2f} Z:{tz:.2f}")
 
     # 显示画面
     cv2.imshow('SportCross AR - Press Q to Quit', frame)
